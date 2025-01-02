@@ -14,13 +14,14 @@ interface Post{
     createdAt: string;
 }
 
-const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 const MyPostlist: React.FunctionComponent<IMyPostlistProps> = ({username, password}) => {
     // const [username, setUsername] = useState<string>("");
     // const [password, setPassword] = useState<string>("");
     const [postContent, setPostContent] = useState<Post[]>([]);
     const [fetchResult, setFetchResult] = useState<string | null>(null);
+    
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const agent = new AtpAgent({ service: "https://bsky.social" });
 
