@@ -29,19 +29,21 @@ const Register: React.FunctionComponent<IPostFormProps> = ({ initStronghold, get
         }
 
         try {
-            // const hashPassword = await invoke<string>("hash_password", { password });
-            const encodedUsername = Array.from(new TextEncoder().encode(username));
-            const encodedPassword = Array.from(new TextEncoder().encode(password));
+            if(stronghold && client){
+                // const hashPassword = await invoke<string>("hash_password", { password });
+                const encodedUsername = Array.from(new TextEncoder().encode(username));
+                const encodedPassword = Array.from(new TextEncoder().encode(password));
 
-            const store = client.getStore();
-            
-            await store.insert("username", encodedUsername);
-            await store.insert("app-password", encodedPassword);
-            await stronghold.save();
-            getRegister(client);
+                const store = client.getStore();
+                
+                await store.insert("username", encodedUsername);
+                await store.insert("app-password", encodedPassword);
+                await stronghold.save();
+                getRegister(client);
 
-            setUsername(username);
-            setRegisterResult("strongholdにユーザー登録しました。")
+                setUsername(username);
+                setRegisterResult("strongholdにユーザー登録しました。")
+            }
 
             // sqliteに保存する処理
             const result = await invoke("signup_user", {
