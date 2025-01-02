@@ -14,7 +14,7 @@ interface Post{
     createdAt: string;
 }
 
-const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 const MyPostlist: React.FunctionComponent<IMyPostlistProps> = ({username, password}) => {
     // const [username, setUsername] = useState<string>("");
