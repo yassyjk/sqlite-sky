@@ -25,7 +25,6 @@ const Register: React.FunctionComponent<IPostFormProps> = ({ initStronghold, get
         if (!stronghold || !client) {
             setRegisterResult("strongholdが初期化されていません。")
             await initStronghold();
-            return;
         }
 
         try {
