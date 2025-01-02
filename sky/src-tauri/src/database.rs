@@ -13,7 +13,7 @@ pub fn init(db_path: &str) -> Result<(), String> {
 // ユーザーテーブル作成
 fn create_user_table(db_path: &str) -> Result<String, String> {
     let connection = Connection::open(db_path).map_err(|e| e.to_string())?;
-    connection.execute("DROP TABLE IF EXISTS users;", []).unwrap();
+    // connection.execute("DROP TABLE IF EXISTS users;", []).unwrap();
     let query = "
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
