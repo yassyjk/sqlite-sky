@@ -1,0 +1,17 @@
+@font-face {
+    font-family: "BIZUDPGothic-Regular";
+    src: url("./assets/fonts/BIZUDPGothic-Regular.ttf");
+    font-display: swap;
+}
+
+.custom-alert {
+    font-family: 'BIZUDPGothic-Regular', 'Arial', sans-serif; /* 使用したいフォント */
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}

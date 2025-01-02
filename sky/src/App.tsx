@@ -1,6 +1,6 @@
 // import { useState } from "react";
 // import reactLogo from "./assets/react.svg";
-// import { invoke } from "@tauri-apps/api/core";
+import { invoke } from "@tauri-apps/api/core";
 import PostForm from "./components/Form/PostForm";
 import "./App.css";
 import Register from "./components/User/Register"; 
@@ -100,7 +100,25 @@ const App: React.FC = () => {
           setResult("既存のユーザーを読み込みました。");
             
         } else {
-          setResult("ユーザー登録をしてください。");
+          try {
+            const currentUser = await localStorage.getItem("currentUser");
+
+            if(currentUser){
+              const sqlite_password: string = await invoke("login_user", {
+                username: currentUser
+              })
+              if (sqlite_password) {
+                setUsername(currentUser);
+                setPassword(sqlite_password);
+              }
+              setResult("sqliteからユーザーを読み込みました。");
+            }else{
+              setResult("ユーザー登録をしてください。");
+            }
+            
+          } catch (error) {
+            setResult("ユーザー登録をしてください。");
+          }
         }
           
       }catch(error){

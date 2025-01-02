@@ -1,5 +1,7 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 use tauri::Manager;
+use tauri_plugin_fs::FsExt;
+pub mod database;
 // use argon2::{
 //     password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
 //     Argon2, Algorithm, Params, Version
@@ -54,7 +56,18 @@ pub fn run() {
         // }).build())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())  // dialog用
-        .invoke_handler(tauri::generate_handler![greet])
+        .plugin(tauri_plugin_fs::init())  // fs用
+        .setup(|app| {  //databaseのsetup
+            let fs_scope = app.fs_scope();
+            fs.scope.allow_directory(app.path().app_data_dir().unwrap(), true)?;
+            let app_dir = app.path().app_data_dir().unwrap();
+            let db_path = app_dir.join(database::BSKY_DB);
+
+            database::init(&db_path.to_str().unwrap()).map_err(|e| e.to_string())?;
+
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![greet, database::signup_user,database::login_user])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

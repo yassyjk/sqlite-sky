@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "tauri-sky",
-  "version": "0.3.0",
-  "identifier": "com.tauriSky.app",
+  "productName": "sqlite-sky",
+  "version": "0.1.0",
+  "identifier": "com.sqliteSky.app",
   "build": {
     "beforeDevCommand": "yarn dev --host",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "tauri-sky",
+        "title": "sqlite-sky",
         "width": 800,
         "height": 600
       }
@@ -24,6 +24,14 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "windows": {
+      "webviewInstallMode": {
+        "type": "skip"
+      },
+      "nsis": {
+        "installMode": "currentUser"
+      }
+    },
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

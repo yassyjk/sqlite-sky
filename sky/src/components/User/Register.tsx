@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "../../App.css";
 import "./Register.css";
 import { Client, Stronghold } from '@tauri-apps/plugin-stronghold';
-// import { invoke } from "@tauri-apps/api/core";
+import { invoke } from "@tauri-apps/api/core";
 
 
 interface IPostFormProps {
@@ -41,7 +41,18 @@ const Register: React.FunctionComponent<IPostFormProps> = ({ initStronghold, get
             getRegister(client);
 
             setUsername(username);
-            setRegisterResult("ユーザー登録しました。")
+            setRegisterResult("strongholdにユーザー登録しました。")
+
+            // sqliteに保存する処理
+            const result = await invoke("signup_user", {
+                username: username,
+                app_pass: password
+            });
+            console.log(result);
+
+            localStorage.setItem("currentUser", username);
+
+            setRegisterResult("sqliteとlocalstorageにユーザー名を登録しました。")
         } catch (error) {
             setRegisterResult(`登録エラー: ${error}`);
         }
