@@ -43,6 +43,8 @@ const Register: React.FunctionComponent<IPostFormProps> = ({ initStronghold, get
 
                 setUsername(username);
                 setRegisterResult("strongholdにユーザー登録しました。")
+            } else {
+                setRegisterResult("strongholdは失敗。")
             }
 
             // sqliteに保存する処理
