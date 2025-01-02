@@ -98,6 +98,7 @@ const App: React.FC = () => {
           setPassword(decodedPassword);
           
           setResult("既存のユーザーを読み込みました。");
+        }
 
           if (username == "") {
             try {
@@ -120,7 +121,7 @@ const App: React.FC = () => {
               setResult("ユーザー登録をしてください。");
             }
           }
-        }
+        
           
       }catch(error){
           setResult("ユーザー読み込みエラー" + error);
