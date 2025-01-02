@@ -63,7 +63,7 @@ pub fn run() {
             let app_dir = app.path().app_data_dir().unwrap();
             let db_path = app_dir.join(database::BSKY_DB);
 
-            database::init(&db_path.to_str().unwrap()).map_err(|e| e.to_string())?;
+            database::init(&db_path.to_str().unwrap().replace("\\", "\\\\")).map_err(|e| e.to_string())?;
 
             Ok(())
         })
