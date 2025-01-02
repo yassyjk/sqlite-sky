@@ -61,7 +61,7 @@ pub async fn signup_user(app_handle: tauri::AppHandle, username: String, app_pas
 
     // ユーザー登録
     connection.execute("
-        INSERT INTO users (username, app_pass) VALUES (?, ?)",[&username, &app_pass]).map_err(|e| e.tostring())?;
+        INSERT INTO users (username, app_pass) VALUES (?, ?)",[&username, &app_pass]).map_err(|e| e.to_string())?;
 
         Ok("ユーザー登録完了".to_string())
 }
@@ -91,5 +91,5 @@ pub async fn login_user(app_handle: tauri::AppHandle, username: String) -> Resul
         |row| row.get(0)
     ).unwrap_or("パスワードなし".to_string());
 
-    Ok(app_pass);
+    Ok(app_pass)
 }
