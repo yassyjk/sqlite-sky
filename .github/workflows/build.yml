@@ -9,6 +9,7 @@
       types: [opened, synchronize]
 
   env:
+    PROJECT_REPOSITORY: sqlite-sky
     PROJECT_NAME: sky
 
   jobs:
@@ -36,7 +37,9 @@
         - name: Generate version date
           if: matrix.platform == 'ubuntu-22.04'
           id: version_date
-          run: echo "VERSION_DATE=$(date + '%Y.%m.%d')" >> GITHUB_OUTPUT
+          env:
+            TZ: 'Asia/Tokyo'
+          run: echo "VERSION_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
         - name: Setup Android SDK
           if: matrix.platform == 'ubuntu-22.04'
           uses: android-actions/setup-android@v3
@@ -76,7 +79,7 @@
           if: matrix.platform == 'ubuntu-22.04'
           run: |
             pwd
-            cp /home/runner/work/tauri-${{ env.PROJECT_NAME }}/tauri-${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}/src-tauri/gen/android/app/build/outputs/apk/universal/release/*.apk .
+            cp /home/runner/work/${{ env.PROJECT_REPOSITORY }}/${{ env.PROJECT_REPOSITORY }}/${{ env.PROJECT_NAME }}/src-tauri/gen/android/app/build/outputs/apk/universal/release/*.apk .
             ls -la
         - name: Create release
           id: create_release
