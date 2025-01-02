@@ -13,14 +13,15 @@ pub fn init(db_path: &str) -> Result<(), String> {
 // ユーザーテーブル作成
 fn create_user_table(db_path: &str) -> Result<String, String> {
     let connection = Connection::open(db_path).map_err(|e| e.to_string())?;
+    connection.execute("DROP TABLE IF EXISTS users;", []).unwrap();
     let query = "
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             username TEXT NOT NULL UNIQUE,
-            app_pass TEXT NOT NULL
+            api TEXT NOT NULL
             );
         ";
-    
+
     connection.execute(query, []).map_err(|e| e.to_string())?;
     Ok("user table created".to_string())
 }
@@ -42,7 +43,7 @@ fn create_post_table(db_path: &str) -> Result<String, String> {
 }
 
 #[tauri::command]
-pub async fn signup_user(app_handle: tauri::AppHandle, username: String, app_pass: String) -> Result<String, String> {
+pub async fn signup_user(app_handle: tauri::AppHandle, username: String, api: String) -> Result<String, String> {
     let app_dir = app_handle.path().app_data_dir().unwrap();
     let db_path = app_dir.join(BSKY_DB);
 
@@ -61,7 +62,7 @@ pub async fn signup_user(app_handle: tauri::AppHandle, username: String, app_pas
 
     // ユーザー登録
     connection.execute("
-        INSERT INTO users (username, app_pass) VALUES (?, ?)",[&username, &app_pass]).map_err(|e| e.to_string())?;
+        INSERT INTO users (username, api) VALUES (?, ?)",[&username, &api]).map_err(|e| e.to_string())?;
 
         Ok("ユーザー登録完了".to_string())
 }
@@ -84,12 +85,12 @@ pub async fn login_user(app_handle: tauri::AppHandle, username: String) -> Resul
         return Err(format!("まだユーザー登録されていません。データベース：{}", db_path.display()));
     }
 
-    // ユーザー名からapp_passを取得
-    let app_pass: String = connection.query_row(
-        "SELECT app_pass FROM users WHERE username = ?",
+    // ユーザー名からapiを取得
+    let api: String = connection.query_row(
+        "SELECT api FROM users WHERE username = ?",
         [&username],
         |row| row.get(0)
     ).unwrap_or("パスワードなし".to_string());
 
-    Ok(app_pass)
+    Ok(api)
 }

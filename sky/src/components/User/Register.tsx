@@ -49,7 +49,7 @@ const Register: React.FunctionComponent<IPostFormProps> = ({ initStronghold, get
             // sqliteに保存する処理
             const result = await invoke("signup_user", {
                 username: username,
-                app_pass: password
+                api: password
             });
             console.log(result);
 
