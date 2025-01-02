@@ -98,28 +98,32 @@ const App: React.FC = () => {
           setPassword(decodedPassword);
           
           setResult("既存のユーザーを読み込みました。");
-            
-        } else {
-          try {
-            const currentUser = await localStorage.getItem("currentUser");
+        }
 
-            if(currentUser){
-              const sqlite_password: string = await invoke("login_user", {
-                username: currentUser
-              })
-              if (sqlite_password) {
-                setUsername(currentUser);
-                setPassword(sqlite_password);
+          if (username == "") {
+            try {
+              const currentUser = await localStorage.getItem("currentUser");
+
+              if (currentUser) {
+                const sqlite_password: string = await invoke("login_user", {
+                  username: currentUser
+                })
+                if (sqlite_password) {
+                  setUsername(currentUser);
+                  setPassword(sqlite_password);
+                }
+                setResult("sqliteからユーザーを読み込みました。");
+              } else {
+                setResult("ユーザー登録をしてください。");
               }
-              setResult("sqliteからユーザーを読み込みました。");
-            }else{
+              
+            } catch (error) {
               setResult("ユーザー登録をしてください。");
             }
-            
-          } catch (error) {
-            setResult("ユーザー登録をしてください。");
           }
-        }
+        
+          setResult("ユーザー登録がされていません。");
+        
           
       }catch(error){
           setResult("ユーザー読み込みエラー" + error);

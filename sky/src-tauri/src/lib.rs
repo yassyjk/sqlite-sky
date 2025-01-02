@@ -59,15 +59,19 @@ pub fn run() {
         .plugin(tauri_plugin_fs::init())  // fs用
         .setup(|app| {  //databaseのsetup
             let fs_scope = app.fs_scope();
-            fs.scope.allow_directory(app.path().app_data_dir().unwrap(), true)?;
+            fs_scope.allow_directory(app.path().app_data_dir().unwrap(), true)?;
             let app_dir = app.path().app_data_dir().unwrap();
             let db_path = app_dir.join(database::BSKY_DB);
 
-            database::init(&db_path.to_str().unwrap()).map_err(|e| e.to_string())?;
-
+            // データベース初期化の結果を確認
+            if let Err(e) = database::init(&db_path.to_str().unwrap()){
+                // エラーが発生した場合、エラーメッセージをログに記録
+                eprintln!("データベースの初期化に失敗しました: {}", e);
+            }
+            
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet, database::signup_user,database::login_user])
+        .invoke_handler(tauri::generate_handler![greet, database::signup_user, database::login_user])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { AtpAgent } from "@atproto/api";
 import "../../App.css";
 
@@ -14,11 +14,14 @@ interface Post{
     createdAt: string;
 }
 
+
 const MyPostlist: React.FunctionComponent<IMyPostlistProps> = ({username, password}) => {
     // const [username, setUsername] = useState<string>("");
     // const [password, setPassword] = useState<string>("");
     const [postContent, setPostContent] = useState<Post[]>([]);
     const [fetchResult, setFetchResult] = useState<string | null>(null);
+    
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const agent = new AtpAgent({ service: "https://bsky.social" });
 
@@ -60,7 +63,21 @@ const MyPostlist: React.FunctionComponent<IMyPostlistProps> = ({username, passwo
     }
 
     useEffect(() => {
-        fetchMyPost();
+        if (username || password) {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+
+            timeoutRef.current = setTimeout(() => {
+                fetchMyPost();
+            }, 2000);
+        }
+
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
     }, [username, password]);
 
     // const getCredentials = () => {

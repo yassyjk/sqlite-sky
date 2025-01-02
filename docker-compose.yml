@@ -43,7 +43,7 @@ services:
     volumes:
       - ./sky:/app
       - $HOME/Android/SDK:/root/Android/SDK
-      - ./sqlite_db:/root/.local/share/com.tauri-sky.app
+      - ./sqlite_db:/root/.local/share/com.sqliteSky.app
       # - /usr/lib/jvm/java-21-openjdk-amd64:/usr/lib/jvm/java-21-openjdk-amd64
       # X11ソケットをマウント（X11でのGUI表示用）
       - type: bind
