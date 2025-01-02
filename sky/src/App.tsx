@@ -122,6 +122,8 @@ const App: React.FC = () => {
             }
           }
         
+          setResult("ユーザー登録がされていません。");
+        
           
       }catch(error){
           setResult("ユーザー読み込みエラー" + error);
