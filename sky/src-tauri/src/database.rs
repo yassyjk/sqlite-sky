@@ -33,7 +33,7 @@ fn create_post_table(db_path: &str) -> Result<String, String> {
             post TEXT NOT NULL,
             created_at TEXT NOT NULL,
             username_id INTEGER NOT NULL,
-            FOREIGN KEY (username_id) REFERANCES users(id) ON DELETE CASCADE
+            FOREIGN KEY (username_id) REFERENCES users(id) ON DELETE CASCADE
             );
         ";
     
