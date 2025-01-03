@@ -45,10 +45,7 @@ fn create_post_table(db_path: &str) -> Result<String, String> {
 #[tauri::command]
 pub async fn signup_user(app_handle: tauri::AppHandle, username: String, api: String) -> Result<String, String> {
     // let app_dir = app_handle.path().app_data_dir().unwrap();
-    let app_dir = app_handle.path().resolve(".", BaseDirectory::Config)?
-                     .to_str()
-    .ok_or("Invalid UTF-8 in path")?
-    .to_string();
+    let app_dir = app_handle.path().resolve(".", BaseDirectory::Config).map_err(|e| format!("Failed to resolve app directory: {}", e))?;
     
     let db_path = app_dir.join(BSKY_DB);
 
@@ -75,10 +72,7 @@ pub async fn signup_user(app_handle: tauri::AppHandle, username: String, api: St
 #[tauri::command]
 pub async fn login_user(app_handle: tauri::AppHandle, username: String) -> Result<String, String> {
     // let app_dir = app_handle.path().app_data_dir().unwrap();
-    let app_dir = app_handle.path().resolve(".", BaseDirectory::Config)?
-                     .to_str()
-    .ok_or("Invalid UTF-8 in path")?
-    .to_string();
+    let app_dir = app_handle.path().resolve(".", BaseDirectory::Config).map_err(|e| format!("Failed to resolve app directory: {}", e))?;
     
     let db_path = app_dir.join(BSKY_DB);
 
@@ -108,10 +102,7 @@ pub async fn login_user(app_handle: tauri::AppHandle, username: String) -> Resul
 #[tauri::command]
 pub async fn get_users(app_handle: tauri::AppHandle) -> Result<Vec<String>, String> {
     // let app_dir = app_handle.path().app_data_dir().unwrap();
-    let app_dir = app_handle.path().resolve(".", BaseDirectory::Config)?
-                     .to_str()
-    .ok_or("Invalid UTF-8 in path")?
-    .to_string();
+    let app_dir = app_handle.path().resolve(".", BaseDirectory::Config).map_err(|e| format!("Failed to resolve app directory: {}", e))?;
     
     let db_path = app_dir.join(BSKY_DB);
 
