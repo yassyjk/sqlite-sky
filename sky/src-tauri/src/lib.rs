@@ -1,5 +1,5 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-use tauri::Manager;
+use tauri::{api::path::BaseDirectory, Manager};
 use tauri_plugin_fs::FsExt;
 pub mod database;
 // use argon2::{
@@ -59,9 +59,16 @@ pub fn run() {
         .plugin(tauri_plugin_fs::init())  // fs用
         .setup(|app| {  //databaseのsetup
             let fs_scope = app.fs_scope();
-            fs_scope.allow_directory(app.path().app_dir().unwrap(), true)?;
-            let app_dir = tauri::AppHandle.path_resolver().app_dir().unwrap();
-            let db_path = app_dir.join(database::BSKY_DB);
+ // BaseDirectory を使用してアプリケーションデータディレクトリを取得
+        let app_data_dir = app
+            .path_resolver()
+            .resolve(BaseDirectory::AppData)
+            .expect("Failed to resolve AppData directory");
+
+        // ディレクトリのアクセス許可を設定
+        fs_scope.allow_directory(&app_data_dir, true)?;
+            
+            let db_path = app_data_dir.join(database::BSKY_DB);
 
             // データベース初期化の結果を確認
             if let Err(e) = database::init(&db_path.to_str().unwrap()){
