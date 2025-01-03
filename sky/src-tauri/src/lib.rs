@@ -60,8 +60,8 @@ pub fn run() {
         .setup(|app| {  //databaseのsetup
             let fs_scope = app.fs_scope();
 
-            let app_dir = app.path().resolve(".", BaseDirectory::Config)?;
-            fs_scope.allow_directory(app_dir.unwrap(), true)?;
+            let app_dir = app.path().resolve(".", BaseDirectory::Config).map_err(|e| format!("Failed to resolve app directory: {}", e))?;
+            fs_scope.allow_directory(&app_dir, true)?;
             // let app_dir = app.path().app_data_dir().unwrap();
             let db_path = app_dir.join(database::BSKY_DB);
 
