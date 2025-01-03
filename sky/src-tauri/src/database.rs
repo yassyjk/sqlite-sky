@@ -94,3 +94,18 @@ pub async fn login_user(app_handle: tauri::AppHandle, username: String) -> Resul
 
     Ok(api)
 }
+
+#[tauri::command]
+pub async fn get_users(app_handle: tauri::AppHandle) -> Result<Vec<String>, String> {
+    let app_dir = app_handle.path().app_data_dir().unwrap();
+    let db_path = app_dir.join(BSKY_DB);
+
+    let connection = Connection::open(&db_path).map_err(|e| e.to_string())?;
+
+    // ユーザー一覧取得
+    let mut stmt = connection.prepare("SELECT username FROM users").map_err(|e| e.to_string())?;
+    let users = stmt.query_map([], |row| row.get(0)).map_err(|e| e.to_string())?
+    .collect::<Result<Vec<String>, _>>().map_err(|e| e.to_string())?;
+
+    Ok(users)
+}
