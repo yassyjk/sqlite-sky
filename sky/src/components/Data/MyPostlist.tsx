@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { AtpAgent } from "@atproto/api";
 import "../../App.css";
+import "./MyPostlist.css";
 
 
 interface IMyPostlistProps {
@@ -70,7 +71,7 @@ const MyPostlist: React.FunctionComponent<IMyPostlistProps> = ({username, passwo
 
             timeoutRef.current = setTimeout(() => {
                 fetchMyPost();
-            }, 2000);
+            }, 1000);
         }
 
         return () => {
@@ -121,13 +122,16 @@ const MyPostlist: React.FunctionComponent<IMyPostlistProps> = ({username, passwo
             {fetchResult && <p>{fetchResult}</p>}
             {postContent.length === 0 ? (
                 <p>投稿無し</p>
-            ) : (<ul>
+            ) : (<ul role='list'>
                     {
                         postContent.map((post) => (
-                            <li key={post.uri}>
-                                <p>{post.text}</p>
-                                <p>{new Date(post.createdAt).toLocaleString()}</p>
-                            </li>
+                            <div>
+                                <hr></hr>
+                                <li key={post.uri} className='post-list'>
+                                    <p>{post.text}</p>
+                                    <p>{new Date(post.createdAt).toLocaleString()}</p>
+                                </li>
+                            </div>
                         ))
                     }
             </ul>
