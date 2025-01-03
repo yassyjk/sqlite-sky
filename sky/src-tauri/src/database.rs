@@ -105,7 +105,7 @@ pub async fn get_users(app_handle: tauri::AppHandle) -> Result<Vec<String>, Stri
     // ユーザー一覧取得
     let mut stmt = connection.prepare("SELECT username FROM users").map_err(|e| e.to_string())?;
     let users = stmt.query_map([], |row| row.get(0)).map_err(|e| e.to_string())?
-    .collect::<Result<Vec<String>, _>>().map_err(|e| e.to_string());
+    .collect::<Result<Vec<String>, _>>().map_err(|e| e.to_string())?;
 
     Ok(users)
 }
