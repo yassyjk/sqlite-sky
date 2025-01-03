@@ -59,6 +59,7 @@ const MyPostlist: React.FunctionComponent<IMyPostlistProps> = ({username, passwo
                 setFetchResult("ユーザー情報がありません。" + username + ":" + password + ":" + response);
             }
         } catch (error) {
+            setPostContent([]);
             setFetchResult("fetch error:" + error);
         }
     }
