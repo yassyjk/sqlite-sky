@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 // import { Client, Stronghold } from '@tauri-apps/plugin-stronghold';
 // import { appDataDir } from '@tauri-apps/api/path';
 import MyPostlist from "./components/Data/MyPostlist";
+import UserList from "./components/User/UserList";
 // import { invoke } from "@tauri-apps/api/core";
 
 // import { getCurrentWindow } from "@tauri-apps/api/window";
@@ -16,12 +17,27 @@ import MyPostlist from "./components/Data/MyPostlist";
 
 
 const App: React.FC = () => {
+  const [users, setUsers] = useState<string[]>([]);
       const [username, setUsername] = useState("");
       const [password, setPassword] = useState("");
       // const [strongholdResult, setStrongholdResult] = useState<string | null>(null);
       const [result, setResult] = useState<string | null>(null);
       // const [stronghold, setStronghold] = useState<Stronghold | null>(null);
       // const [client, setClient] = useState<Client | null>(null);
+
+  const fetchUsers = async () => {
+    try {
+      const userList: string[] = await invoke("get_users");
+      setUsers(userList);
+    } catch (error) {
+      setResult("ユーザー一覧の取得に失敗");
+    }
+  };
+
+  const switchUser = (newUser: string) => {
+    localStorage.setItem("currentUser", newUser);
+    getRegister();
+  };
       
 
   // const initStronghold = async () => {
@@ -140,6 +156,7 @@ const App: React.FC = () => {
       // await setupCloseListener();
       // await initStronghold();
       await getRegister();
+      await fetchUsers();
     };
     setup();
   }, []);
@@ -152,6 +169,7 @@ const App: React.FC = () => {
         {result && 
           <p>R: {result}</p>
         }
+        <UserList users={users} currentUser={username} switchUser={switchUser} />
         <Register getRegister={getRegister} username={username} password={password} setUsername={setUsername} setPassword={setPassword}  />
         <PostForm username={username} password={password} />
         <MyPostlist username={username} password={password} />
