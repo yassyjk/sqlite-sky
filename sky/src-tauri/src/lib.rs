@@ -62,7 +62,7 @@ pub fn run() {
  // BaseDirectory を使用してアプリケーションデータディレクトリを取得
         let app_data_dir = app
             .path()
-            .resolve(BaseDirectory::AppData)
+            .resolve(".",BaseDirectory::AppData)
             .expect("Failed to resolve AppData directory");
 
         // ディレクトリのアクセス許可を設定
