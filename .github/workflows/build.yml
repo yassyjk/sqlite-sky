@@ -39,7 +39,7 @@
           id: version_date
           env:
             TZ: 'Asia/Tokyo'
-          run: echo "VERSION_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
+          run: echo "VERSION_DATE=$(date +'%Y.%m.%d-%H:%M')" >> $GITHUB_OUTPUT
         - name: Setup Android SDK
           if: matrix.platform == 'ubuntu-22.04'
           uses: android-actions/setup-android@v3
