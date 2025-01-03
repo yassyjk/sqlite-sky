@@ -59,8 +59,8 @@ pub fn run() {
         .plugin(tauri_plugin_fs::init())  // fs用
         .setup(|app| {  //databaseのsetup
             let fs_scope = app.fs_scope();
-            fs_scope.allow_directory(app.path().app_data_dir().unwrap(), true)?;
-            let app_dir = app.path().app_data_dir().unwrap();
+            fs_scope.allow_directory(app.path().app_dir().unwrap(), true)?;
+            let app_dir = app.path().app_dir().unwrap();
             let db_path = app_dir.join(database::BSKY_DB);
 
             // データベース初期化の結果を確認
