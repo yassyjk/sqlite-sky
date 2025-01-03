@@ -1,5 +1,9 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+<<<<<<< HEAD
 use tauri::{path::BaseDirectory, Manager};
+=======
+use tauri::{api::path::BaseDirectory, Manager};
+>>>>>>> dcba33f999cb0e2cfe15337faa2195be97030dd2
 use tauri_plugin_fs::FsExt;
 pub mod database;
 // use argon2::{
@@ -59,6 +63,7 @@ pub fn run() {
         .plugin(tauri_plugin_fs::init())  // fs用
         .setup(|app| {  //databaseのsetup
             let fs_scope = app.fs_scope();
+
             let app_dir = app.path().resolve(".", BaseDirectory::Config)?;
             fs_scope.allow_directory(app_dir.unwrap(), true)?;
             // let app_dir = app.path().app_data_dir().unwrap();
