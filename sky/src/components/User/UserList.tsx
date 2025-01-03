@@ -1,17 +1,16 @@
-
-
 import * as React from 'react';
+import './UserList.css';
 
 interface IUserListProps {
     users: string[], 
     currentUser: string,
-    switchUser: (user: string) => void
+    switchUser: (user: string) => Promise<void>
 }
 
 const UserList: React.FunctionComponent<IUserListProps> = ({ users, currentUser, switchUser }) => {
     
     return (
-        <div>
+        <div className='user-list'>
             <h2>
                 ユーザー一覧
             </h2>

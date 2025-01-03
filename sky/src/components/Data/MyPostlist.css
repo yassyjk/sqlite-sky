@@ -1,0 +1,9 @@
+ul {
+    list-style: none;
+}
+
+.post-list {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}

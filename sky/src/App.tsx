@@ -34,9 +34,23 @@ const App: React.FC = () => {
     }
   };
 
-  const switchUser = (newUser: string) => {
+  const switchUser = async (newUser: string) => {
     localStorage.setItem("currentUser", newUser);
-    getRegister();
+    
+    const currentUser = localStorage.getItem("currentUser");
+
+    if (currentUser) {
+      const sqlite_password: string = await invoke("login_user", {
+        username: currentUser
+      })
+      if (sqlite_password) {
+        setUsername(currentUser);
+        setPassword(sqlite_password);
+      }
+      setResult("sqliteからユーザーを読み込みました。");
+    } else {
+      setResult("ユーザー登録をしてください。");
+    }
   };
       
 
@@ -118,7 +132,7 @@ const App: React.FC = () => {
 
         //   if (username == "") {
             try {
-              const currentUser = await localStorage.getItem("currentUser");
+              const currentUser = localStorage.getItem("currentUser");
 
               if (currentUser) {
                 const sqlite_password: string = await invoke("login_user", {
