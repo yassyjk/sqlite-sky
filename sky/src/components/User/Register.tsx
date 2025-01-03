@@ -83,7 +83,7 @@ const Register: React.FunctionComponent<IPostFormProps> = ({ getRegister, userna
                     required />.bsky.social
                 <br></br>
 
-                <label htmlFor="password">パスワード</label>
+                <label htmlFor="password">アプリパスワード</label>
                 <input
                     type="text"
                     id="password"
