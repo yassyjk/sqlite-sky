@@ -1,9 +1,5 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-<<<<<<< HEAD
 use tauri::{path::BaseDirectory, Manager};
-=======
-use tauri::{api::path::BaseDirectory, Manager};
->>>>>>> dcba33f999cb0e2cfe15337faa2195be97030dd2
 use tauri_plugin_fs::FsExt;
 pub mod database;
 // use argon2::{
