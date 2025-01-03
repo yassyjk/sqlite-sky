@@ -61,7 +61,7 @@ pub fn run() {
             let fs_scope = app.fs_scope();
  // BaseDirectory を使用してアプリケーションデータディレクトリを取得
         let app_data_dir = app
-            .path_resolver()
+            .path()
             .resolve(BaseDirectory::AppData)
             .expect("Failed to resolve AppData directory");
 
