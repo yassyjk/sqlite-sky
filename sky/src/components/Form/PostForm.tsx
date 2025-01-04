@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AtpAgent } from "@atproto/api";
+import { AtpAgent, RichText } from "@atproto/api";
 import "../../App.css";
 import "./PostForm.css";
 
@@ -21,9 +21,17 @@ const PostForm: React.FunctionComponent<IPostFormProps> = ({ username, password 
             // ログイン処理
             await agent.login({ identifier: username + ".bsky.social", password });
 
+            const rt = new RichText({
+                text: postContent
+            });
+
+            // リンクやメンションの検出
+            await rt.detectFacets(agent);
+
             // 投稿処理
             await agent.post({
-                text: postContent
+                text: rt.text,
+                facets: rt.facets,
             });
 
             setPostResult("投稿に成功しました。");
