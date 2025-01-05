@@ -29,8 +29,8 @@ const MyPostlist: React.FunctionComponent<IMyPostlistProps> = ({username, passwo
     const fetchMyPost = async () => {
         try {
             // ログイン処理
-            console.log(username);
-            console.log(password);
+            // console.log(username);
+            // console.log(password);
 
             if (username && password) {
                 await agent.login({ identifier: username + ".bsky.social", password });
