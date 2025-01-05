@@ -47,16 +47,39 @@ pub async fn fetch_og(url: String) -> Result<OgData, String> {
         }
     }
 
-    
-    // println!("data: {:#?}", &og_data);
+    // 画像データfetch
+    // if let Some(image_url) = &og_data.image {
+    //     match fetch_image(image_url.clone()).await {
+    //         Ok(image_data) => {
+    //             println!("画像データ: {:#?}", image_data);
+    //         },
+    //         Err(e) => {
+    //             println!("画像データ取得エラー: {:#?}", e);
+    //         }
+    //     }
+    // }
 
     Ok(og_data)
 }
 
 #[tauri::command]
+pub async fn fetch_image(image_url: String) -> Result<Vec<u8>, String> {
+    let res = reqwest::get(&image_url).await.map_err(|e| e.to_string())?;
+
+    if !res.status().is_success() {
+        return Err(format!("画像のダウンロードに失敗: {}", res.status()));
+    }
+
+    let image_data = res.bytes().await.map_err(|e| e.to_string())?;
+
+    Ok(image_data.to_vec())
+}
+
+
+#[tauri::command]
 pub async fn compress_image(image_data: Vec<u8>, width: u32, quality: u8) -> Result<Vec<u8>, String> {
-    println!("幅: {:#?}", width);
-    println!("画像フォーマット: {:#?}", image_data);
+    // println!("幅: {:#?}", width);
+    // println!("画像フォーマット: {:#?}", image_data);
 
 
     // データが空でないことを確認
@@ -64,13 +87,13 @@ pub async fn compress_image(image_data: Vec<u8>, width: u32, quality: u8) -> Res
         return Err("画像データが空です。".to_string());
     }
 
-    println!("画像フォーマット: {:#?}", image_data);
+    // println!("画像フォーマット: {:#?}", image_data);
 
     // フォーマットを確認
     let aaa = image::guess_format(&image_data)
     .map_err(|e| format!("画像フォーマットが不明： {}", e))?;
 
-    println!("画像フォーマット: {:#?}", aaa);
+    // println!("画像フォーマット: {:#?}", aaa);
 
 
     // デコード

@@ -74,11 +74,11 @@ const PostForm: React.FunctionComponent<IPostFormProps> = ({ username, password 
                     if (ogData) {
                         if (ogData.image) {
                             
-                            console.log(ogData.image);
-                            const imageResponse = await fetch(ogData.image);
-                            const imageBuffer = await imageResponse.arrayBuffer();
+                            // console.log(ogData.image);
+                            const imageResponse = await invoke("fetch_image", {imageUrl: ogData.image});
+                            const imageBuffer = new Uint8Array(imageResponse as number[]);
 
-                            console.log(imageBuffer);
+                            // console.log(imageBuffer);
 
                             // sharpを使って画像縮小
                             // const compressedImage = await sharp(imageBuffer)

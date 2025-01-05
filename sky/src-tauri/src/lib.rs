@@ -77,7 +77,7 @@ pub fn run() {
             
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet, database::signup_user, database::login_user, database::get_users, opengraph::fetch_og, opengraph::compress_image])
+        .invoke_handler(tauri::generate_handler![greet, database::signup_user, database::login_user, database::get_users, opengraph::fetch_og, opengraph::compress_image, opengraph::fetch_image])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
