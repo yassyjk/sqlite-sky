@@ -2,6 +2,8 @@
 use tauri::{path::BaseDirectory, Manager};
 use tauri_plugin_fs::FsExt;
 pub mod database;
+pub mod opengraph;
+// use tauri_plugin_http::reqwest;
 // use argon2::{
 //     password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
 //     Argon2, Algorithm, Params, Version
@@ -25,15 +27,16 @@ fn greet(name: &str) -> String {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .setup(|app| {
-            let salt_path = app
-                .path()
-                .app_local_data_dir()
-                .expect("could not resolve local data path")
-                .join("salt.txt");
-            app.handle().plugin(tauri_plugin_stronghold::Builder::with_argon2(&salt_path).build())?;
-            Ok(())
-        })
+        // .setup(|app| {
+        //     let salt_path = app
+        //         .path()
+        //         .app_local_data_dir()
+        //         .expect("could not resolve local data path")
+        //         .join("salt.txt");
+        //     app.handle().plugin(tauri_plugin_stronghold::Builder::with_argon2(&salt_path).build())?;
+        //     Ok(())
+        // })
+
         // .plugin(tauri_plugin_stronghold::Builder::new(|pass| {
         //     // ハッシュ化処理
         //     // hash_password(pass).map_err(|e| format!("Failed hashing: {}", e))
@@ -57,6 +60,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())  // dialog用
         .plugin(tauri_plugin_fs::init())  // fs用
+        .plugin(tauri_plugin_http::init())  //fetch用
         .setup(|app| {  //databaseのsetup
             let fs_scope = app.fs_scope();
 
@@ -73,7 +77,7 @@ pub fn run() {
             
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet, database::signup_user, database::login_user, database::get_users])
+        .invoke_handler(tauri::generate_handler![greet, database::signup_user, database::login_user, database::get_users, opengraph::fetch_og, opengraph::compress_image, opengraph::fetch_image])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

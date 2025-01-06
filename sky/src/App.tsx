@@ -178,7 +178,7 @@ const App: React.FC = () => {
 
     return (
       <main className="container">
-        <h1>Tauri-Sky</h1>
+        <h1>Taurin-Sky</h1>
         
         {result && 
           <p>R: {result}</p>
